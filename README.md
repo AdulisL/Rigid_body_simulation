@@ -1,3 +1,5 @@
+[Meron Asfaw](https://github.com/AdulisL) <br/>
+[Sarah Thomson](https://github.com/sarahtthomson)
 <!--
   <<< Author notes: Header of the course >>>
   Include a 1280×640 image, course title in sentence case, and a concise description in emphasis.
