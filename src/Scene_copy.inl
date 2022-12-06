@@ -9,9 +9,11 @@ using namespace glm;
 void Scene::init(void){
     // Create a geometry palette
     geometry["cube"] = new Cube;
+    geometry["sphere"] = new Obj;
     geometry["teapot"] = new Obj;
     geometry["bunny"] = new Obj;
     geometry["cube"] -> init();
+    geometry["sphere"] -> init("models/sphere.obj");
     geometry["teapot"] -> init("models/teapot.obj");
     geometry["bunny"] -> init("models/bunny.obj");
     
@@ -21,7 +23,7 @@ void Scene::init(void){
     material["wood"] -> diffuse = vec4(0.3f,0.15f,0.1f,1.0f);
     material["wood"] -> specular = vec4(0.3f,0.15f,0.1f,1.0f);
     material["wood"] -> shininess = 100.0f;
-    
+    // Ceramics
     material["ceramic"] = new Material;
     material["ceramic"] -> ambient = vec4(0.02f, 0.07f, 0.2f, 1.0f);
     material["ceramic"] -> diffuse = vec4(0.1f, 0.25f, 0.7f, 1.0f);
@@ -51,18 +53,26 @@ void Scene::init(void){
     model["teapot1"] = new Model;
     model["teapot1"] -> geometry = geometry["teapot"];
     model["teapot1"] -> material = material["silver"];
+
     model["teapot2"] = new Model;
     model["teapot2"] -> geometry = geometry["teapot"];
     model["teapot2"] -> material = material["ceramic"];
+
     model["table piece"] = new Model;
     model["table piece"] -> geometry = geometry["cube"];
     model["table piece"] -> material = material["wood"];
+
     model["bunny"] = new Model;
     model["bunny"] -> geometry = geometry["bunny"];
     model["bunny"] -> material = material["turquoise"];
+
     model["bulb"] = new Model;
     model["bulb"] -> geometry = geometry["cube"];
     model["bulb"] -> material = material["bulb"];
+
+    model["sphere"] = new Model;
+    model["sphere"] -> geometry = geometry["sphere"];
+    model["sphere"] -> material = material["ceramic"];
     
     // Create a light palette
     light["sun"] = new Light;
@@ -80,10 +90,10 @@ void Scene::init(void){
     node["teapot1"] = new Node;
     node["teapot2"] = new Node;
     node["bunny"] = new Node;
+    node["sphere"] = new Node;
     
-    
-    node["table"] -> childnodes.push_back( node["table top"] );
-    node["table"] -> childtransforms.push_back( translate(vec3(0.0f,1.2f,0.0f)) );
+    node["table top"] -> childnodes.push_back( node["table"] );
+    node["table top"] -> childtransforms.push_back( translate(vec3(0.0f,1.2f,0.0f)) );
     node["table"] -> childnodes.push_back( node["table leg"] );
     node["table"] -> childtransforms.push_back( translate(vec3(-0.9f,0.0f,-0.4f)) );
     node["table"] -> childnodes.push_back( node["table leg"] );
@@ -103,20 +113,26 @@ void Scene::init(void){
     node["table top"] -> childnodes.push_back( node["teapot2"] );
     node["table top"] -> childtransforms.push_back( translate(vec3( 0.5f,0.0f,0.0f)) * rotate( -120.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ) );
     
-    node["teapot1"] -> models.push_back( model["teapot1"] );
+    node["teapot1"] -> models.push_back( model["teapot2"] );
     node["teapot1"] -> modeltransforms.push_back( scale(vec3(0.5f)) );
-    node["teapot2"] -> models.push_back( model["teapot2"] );
+    node["teapot2"] -> models.push_back( model["teapot1"] );
     node["teapot2"] -> modeltransforms.push_back( scale(vec3(1.0f,1.5f,1.0f)) * scale(vec3(0.5f)) );
     
     node["bunny"] -> models.push_back( model["bunny"] );
     node["bunny"] -> modeltransforms.push_back( scale(vec3(0.8f)) * translate(vec3(0.0f,1.0f,0.0f)) );
     
-    node["world"] -> childnodes.push_back( node["table"] );
-    node["world"] -> childtransforms.push_back( mat4(1.0f) );
+    node["sphere"] -> models.push_back( model["sphere"] );
+    node["sphere"] -> modeltransforms.push_back( scale(vec3(0.8f)) * translate(vec3(0.0f,1.0f,0.0f)) );
+    
+    node["world"] -> models.push_back( model["sphere"] );
+    node["world"] -> modeltransforms.push_back( translate(vec3(0.0f,2.0f,0.0f))*scale(vec3(0.1f)) );
+    node["world"] -> modeltransforms.push_back( translate(vec3(0.0f,2.0f,0.0f))*scale(vec3(0.1f)) );
+    node["world"] -> models.push_back( model["bulb"] );
     node["world"] -> childnodes.push_back( node["bunny"] );
     node["world"] -> childtransforms.push_back( translate(vec3(-1.8f,0.0f,0.0f)) * rotate( 90.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ));
-    node["world"] -> models.push_back( model["bulb"] );
-    node["world"] -> modeltransforms.push_back( translate(vec3(0.0f,2.0f,0.0f))*scale(vec3(0.1f)) );
+    node["world"] -> childtransforms.push_back( translate(vec3(-1.8f,0.0f,0.0f)) * rotate( 90.0f*float(M_PI)/180.0f, vec3(0.0f, 1.0f, 0.0f) ));
+    node["world"] -> childnodes.push_back( node["table top"] );
+    node["world"] -> childtransforms.push_back(mat4(1.0f));
     
     // Put a camera
     camera = new Camera;
