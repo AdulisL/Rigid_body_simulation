@@ -1,9 +1,8 @@
-BREWPATH = $(shell brew --prefix)
 
-CC = g++
+CC = g++ -arch x86_64
 CFLAGS = -g -std=c++11 -Wno-deprecated-register -Wno-deprecated-declarations -DGL_DO_NOT_WARN_IF_MULTI_GL_VERSION_HEADERS_INCLUDED
-INCFLAGS = -I./include -I$(BREWPATH)/include
-LDFLAGS = -framework GLUT -framework OpenGL -L$(BREWPATH)/lib -lfreeimage
+INCFLAGS = -I./include
+LDFLAGS = -framework GLUT -framework OpenGL -L./lib/mac -lfreeimage 
 
 RM = /bin/rm -f
 all: SceneViewer
@@ -21,5 +20,3 @@ Scene.o: src/Scene.cpp src/Scene.inl include/Scene.h
 	$(CC) $(CFLAGS) $(INCFLAGS) -c src/Scene.cpp
 clean: 
 	$(RM) *.o SceneViewer
-
- 

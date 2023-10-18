@@ -1,0 +1,35 @@
+body {
+    background-color: antiquewhite;
+    padding: 5%;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h3 {
+    font-weight: 1000;
+    color: red;
+}
+
+h4 {
+    text-decoration: underline;
+}
+
+hr {
+    border: 1.5px dashed antiquewhite;
+    background-color: black;
+}
+
+#titlebar {
+    border: 1.5px double;
+}
+
+#equation {
+    max-width: 500px;
+}
+
+#bunny {
+    max-width: 500px;
+}
+
